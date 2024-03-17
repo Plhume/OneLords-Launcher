@@ -1,13 +1,13 @@
 {
-  "name": "helioslauncher",
-  "version": "2.2.1",
-  "productName": "Helios Launcher",
-  "description": "Modded Minecraft Launcher",
-  "author": "Daniel Scalzi (https://github.com/dscalzi/)",
-  "license": "UNLICENSED",
-  "homepage": "https://github.com/dscalzi/HeliosLauncher",
+  "name": "onelords-launcher",
+  "version": "1.0.0",
+  "productName": "OneLords Launcher",
+  "description": "Launcher officiel de OneLords",
+  "author": "Manon B. (Plhume)",
+  "license": "GPL-3.0-only",
+  "homepage": "https://github.com/Plhume/OneLords-Launcher",
   "bugs": {
-    "url": "https://github.com/dscalzi/HeliosLauncher/issues"
+    "url": "https://github.com/Plhume/OneLords-Launcher/issues"
   },
   "private": true,
   "main": "index.js",
@@ -46,6 +46,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dscalzi/HeliosLauncher.git"
+    "url": "git+https://github.com/Plhume/OneLords-Launcher.git"
   }
 }
