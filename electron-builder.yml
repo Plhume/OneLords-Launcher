@@ -39,10 +39,10 @@ mac:
 # Linux Configuration
 linux: 
   target: 'AppImage'
-  maintainer: 'Daniel Scalzi'
-  vendor: 'Daniel Scalzi'
-  synopsis: 'Modded Minecraft Launcher'
-  description: 'Custom launcher which allows users to join modded servers. All mods, configurations, and updates are handled automatically.'
+  maintainer: 'Manon B.'
+  vendor: 'OneLords'
+  synopsis: 'Launcher officiel de OneLords'
+  description: 'Le launcher de OneLords vous permet de jouer sur tous nos serveurs.'
   category: 'Game'
 
 
