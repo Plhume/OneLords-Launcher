@@ -4,7 +4,7 @@ usernamePlaceholder = "Pseudo"
 usernameEditButton = "Modifier"
 settingsTooltip = "Paramètres"
 serverStatus = "Serveur"
-serverStatusPlaceholder = "Hors-ligne"
+serverStatusPlaceholder = "❌"
 mojangStatus = "Statut Mojang"
 mojangStatusTooltipTitle = "Services"
 mojangStatusNETitle = "Non&nbsp;Essentiel"
@@ -167,7 +167,7 @@ loading = "Chargement..."
 
 [js.landing.serverStatus]
 server = "Serveur"
-offline = "Hors-ligne"
+offline = "❌"
 players = "Joueurs"
 
 [js.landing.systemScan]
