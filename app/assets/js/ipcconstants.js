@@ -1,7 +1,7 @@
 // NOTE FOR THIRD-PARTY
 // REPLACE THIS CLIENT ID WITH YOUR APPLICATION ID.
 // SEE https://github.com/dscalzi/HeliosLauncher/blob/master/docs/MicrosoftAuth.md
-exports.AZURE_CLIENT_ID = '3633c10a-40a8-4750-bcc3-3305ca088fac'
+exports.AZURE_CLIENT_ID = '3bb6b345-d4c7-4a91-a93d-919c55db9d40'
 // SEE NOTE ABOVE.
 
 
