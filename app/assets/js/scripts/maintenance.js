@@ -1,33 +1,29 @@
-async function fetchMaintenanceStatus(url) {
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        const maintenanceStatus = data.maintenance;
-        return maintenanceStatus;
-    } catch (error) {
-        console.error('Une erreur est survenue : ', error);
-        throw error;
-    }
+const maintenance_text = document.getElementById('maintenanceButton')
+
+function setMaintenanceStatus(details) {
+    maintenance_text.innerHTML = details
 }
 
-const url = 'https://launcher.onelords.fr/maintenance.json';
-const maintenanceButton = document.getElementById('maintenanceButton');
-
-maintenanceButton.addEventListener('click', () => {
-    maintenanceButton.innerHTML = 'Maintenance en cours...';
-    maintenanceButton.disabled = true;
-    fetchMaintenanceStatus(url)
-        .then(maintenanceStatus => {
-            if (maintenanceStatus == false) {
-                switchView(VIEWS.maintenance, VIEWS.landing)
-            }
-        })
-        .catch(error => {
-            console.error('Une erreur est survenue : ', error);
-        });
-    setTimeout(() => {
-        maintenanceButton.innerHTML = 'Réessayer';
-        // Réactivez le bouton après la fin de la maintenance
-        maintenanceButton.disabled = false;
-    }, 5000);
-});
+document.getElementById('maintenanceButton').addEventListener('click', async e => {
+    loggerLanding.info('Refreshing maintenance status...')
+    try {
+        fetchMaintenanceStatus(url)
+            .then(async maintenanceStatus => {
+                if (maintenanceStatus == true) {
+                    setMaintenanceStatus('Maintenance en cours...')
+                    // SHOW BEFORE TEXT WHEN 5 SECONDS LEFT
+                    setTimeout(() => {
+                        setMaintenanceStatus('Réessayer')
+                    }, 5000)
+                } else {
+                    switchView(VIEWS.maintenance, VIEWS.landing)
+                }
+            })
+            .catch(error => {
+                console.error('Une erreur est survenue : ', error);
+            });
+    } catch (err) {
+        loggerLanding.error('Unhandled error in during launch process.', err)
+        showLaunchFailure(Lang.queryJS('landing.launch.failureTitle'), Lang.queryJS('landing.launch.failureText'))
+    }
+})

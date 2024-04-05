@@ -157,6 +157,7 @@ pleaseWait = "Patientez.."
 failureTitle = "Erreur dans le lancement !"
 failureText = "Voir la console (CTRL + Shift + i) pour plus de détails."
 okay = "Ok"
+maintenance = "Maintenance en cours !"
 
 [js.landing.selectedAccount]
 noAccountSelected = "Pas de comptes selectionné !"

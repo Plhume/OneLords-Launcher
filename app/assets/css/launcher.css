@@ -4268,13 +4268,6 @@ input:checked+.toggleSwitchSlider:before {
     margin-bottom: 25px;
 }
 
-#maintenanceTextContainer {
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    top: 50%;
-}
-
 #maintenanceButton {
     background: none;
     font-weight: bold;
@@ -4304,4 +4297,26 @@ input:checked+.toggleSwitchSlider:before {
 #maintenanceButton:active {
     color: #c7c7c7;
     text-shadow: 0px 0px 20px #c7c7c7;
+}
+
+#maintenanceButton:hover,
+#maintenanceButton:focus {
+    -webkit-filter: drop-shadow(0px 0px 2px #fff);
+}
+
+#maintenanceButton:active {
+    stroke: #c7c7c7;
+}
+
+#maintenanceButton:active {
+    -webkit-filter: drop-shadow(0px 0px 2px #c7c7c7);
+}
+
+#maintenanceButton:disabled {
+    stroke: rgba(255, 255, 255, 0.75);
+}
+
+#maintenanceButtonContent {
+    display: flex;
+    align-items: center;
 }
