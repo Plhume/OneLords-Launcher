@@ -118,7 +118,7 @@ document.getElementById('launch_button').addEventListener('click', async e => {
                     throw error;
                 }
             }
-            
+
             const url = 'https://launcher.onelords.fr/maintenance.json';
 
             fetchMaintenanceStatus(url)
