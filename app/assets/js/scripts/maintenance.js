@@ -11,7 +11,6 @@ document.getElementById('maintenanceButton').addEventListener('click', async e =
             .then(async maintenanceStatus => {
                 if (maintenanceStatus == true) {
                     setMaintenanceStatus('Maintenance en cours...')
-                    // SHOW BEFORE TEXT WHEN 5 SECONDS LEFT
                     setTimeout(() => {
                         setMaintenanceStatus('Réessayer')
                     }, 5000)
