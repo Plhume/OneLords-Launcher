@@ -156,6 +156,10 @@ function updateSelectedAccount(authUser){
 }
 updateSelectedAccount(ConfigManager.getSelectedAccount())
 
+function isAdmin(authUser){
+    return authUser != null && authUser.uuid === 'f54c3f3d-1f54-4f6e-8b2f-4e2b9e7b2d4e'
+}
+
 // Bind selected server
 function updateSelectedServer(serv){
     if(getCurrentView() === VIEWS.settings){
