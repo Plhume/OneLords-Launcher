@@ -124,7 +124,22 @@ document.getElementById('launch_button').addEventListener('click', async e => {
             fetchMaintenanceStatus(url)
                 .then(async maintenanceStatus => {
                     if (maintenanceStatus == true) {
-                        setLaunchDetails(Lang.queryJS('landing.launch.maintenance'))
+                        if (ConfigManager.getSelectedAccount().uuid == 'b1bbccb3689d4d60bf3d8372a3d6bea3') {
+                            setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
+                            toggleLaunchArea(true)
+                            setLaunchPercentage(0, 100)
+
+                            const details = await validateSelectedJvm(ensureJavaDirIsRoot(jExe), server.effectiveJavaOptions.supported)
+                            if (details != null) {
+                                loggerLanding.info('Jvm Details', details)
+                                await dlAsync()
+
+                            } else {
+                                await asyncSystemScan(server.effectiveJavaOptions)
+                            }
+                        } else {
+                            setLaunchDetails(Lang.queryJS('landing.launch.maintenance'))
+                        }
                     } else {
                         setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
                         toggleLaunchArea(true)
@@ -180,7 +195,7 @@ function updateSelectedAccount(authUser) {
 updateSelectedAccount(ConfigManager.getSelectedAccount())
 
 function isAdmin(authUser) {
-    return authUser != null && authUser.uuid === 'f54c3f3d-1f54-4f6e-8b2f-4e2b9e7b2d4e'
+    return authUser != null && authUser.uuid === 'b1bbccb3-689d-4d60-bf3d-8372a3d6bea3'
 }
 
 // Bind selected server

@@ -86,6 +86,11 @@ function getMaintenanceStatus() {
         });
 }
 
+function isAdmin(authUser) {
+    if (authUser == null) return false
+    if (authUser.uuid == ConfigManager.getSelectedAccount.uuid) return true
+}
+
 async function showMainUI(data) {
     if (!isDev) {
         loggerAutoUpdater.info('Initializing..')
@@ -117,8 +122,13 @@ async function showMainUI(data) {
                 fetchMaintenanceStatus(url)
                     .then(maintenanceStatus => {
                         if (maintenanceStatus == true) {
-                            currentView = VIEWS.maintenance
-                            $(VIEWS.maintenance).fadeIn(1000)
+                            if (ConfigManager.getSelectedAccount().uuid == 'b1bbccb3689d4d60bf3d8372a3d6bea3') {
+                                currentView = VIEWS.landing
+                                $(VIEWS.landing).fadeIn(1000)
+                            } else {
+                                currentView = VIEWS.maintenance
+                                $(VIEWS.maintenance).fadeIn(1000)
+                            }
                         } else {
                             currentView = VIEWS.landing
                             $(VIEWS.landing).fadeIn(1000)
