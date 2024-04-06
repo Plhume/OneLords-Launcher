@@ -300,7 +300,7 @@ selectAnotherAccountButton = "Selectionner un autre compte"
 [js.uicore.autoUpdate]
 checkingForUpdateButton = "Recherche de mises-à-jours..."
 installNowButton = "Installer maintenant !"
-checkForUpdatesButton = "Rechercher les msies-à-jours"
+checkForUpdatesButton = "Rechercher les mises-à-jours"
 
 [js.auth.microsoft.error]
 noProfileTitle = "Erreur dans la connexion :<br>Pas de profile selectionné"
