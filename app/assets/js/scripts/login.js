@@ -1,5 +1,5 @@
 /**
- * login.js
+ * @file login.js
  * Base by Daniel S.
  */
 const validUsername         = /^[a-zA-Z0-9_]{1,16}$/
