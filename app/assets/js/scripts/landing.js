@@ -1,7 +1,8 @@
 /**
- * Script for landing.ejs
+ * landing.js
+ * Base by Daniel S.
+ * Modified by Plhume (06/04/2024)
  */
-// Requirements
 const { URL } = require('url')
 const {
     MojangRestAPI,
@@ -9,7 +10,6 @@ const {
 } = require('helios-core/mojang')
 const {
     RestResponseStatus,
-    isDisplayableError,
     validateLocalFile
 } = require('helios-core/common')
 const {
@@ -27,11 +27,9 @@ const {
     extractJdk
 } = require('helios-core/java')
 
-// Internal Requirements
 const DiscordWrapper = require('./assets/js/discordwrapper')
 const ProcessBuilder = require('./assets/js/processbuilder')
 
-// Launch Elements
 const launch_content = document.getElementById('launch_content')
 const launch_details = document.getElementById('launch_details')
 const launch_progress = document.getElementById('launch_progress')
@@ -42,13 +40,6 @@ const user_text = document.getElementById('user_text')
 
 const loggerLanding = LoggerUtil.getLogger('Landing')
 
-/* Launch Progress Wrapper Functions */
-
-/**
- * Show/hide the loading area.
- * 
- * @param {boolean} loading True if the loading area should be shown, otherwise false.
- */
 function toggleLaunchArea(loading) {
     if (loading) {
         launch_details.style.display = 'flex'
@@ -59,46 +50,25 @@ function toggleLaunchArea(loading) {
     }
 }
 
-/**
- * Set the details text of the loading area.
- * 
- * @param {string} details The new text for the loading details.
- */
 function setLaunchDetails(details) {
     launch_details_text.innerHTML = details
 }
 
-/**
- * Set the value of the loading progress bar and display that value.
- * 
- * @param {number} percent Percentage (0-100)
- */
 function setLaunchPercentage(percent) {
     launch_progress.setAttribute('max', 100)
     launch_progress.setAttribute('value', percent)
     launch_progress_label.innerHTML = percent + '%'
 }
 
-/**
- * Set the value of the OS progress bar and display that on the UI.
- * 
- * @param {number} percent Percentage (0-100)
- */
 function setDownloadPercentage(percent) {
     remote.getCurrentWindow().setProgressBar(percent / 100)
     setLaunchPercentage(percent)
 }
 
-/**
- * Enable or disable the launch button.
- * 
- * @param {boolean} val True to enable, false to disable.
- */
 function setLaunchEnabled(val) {
     document.getElementById('launch_button').disabled = !val
 }
 
-// Bind launch button
 document.getElementById('launch_button').addEventListener('click', async e => {
     loggerLanding.info('Launching game..')
     try {
@@ -165,13 +135,11 @@ document.getElementById('launch_button').addEventListener('click', async e => {
     }
 })
 
-// Bind settings button
 document.getElementById('settingsMediaButton').onclick = async e => {
     await prepareSettings()
     switchView(getCurrentView(), VIEWS.settings)
 }
 
-// Bind avatar overlay button.
 document.getElementById('avatarOverlay').onclick = async e => {
     await prepareSettings()
     switchView(getCurrentView(), VIEWS.settings, 500, 500, () => {
@@ -179,7 +147,6 @@ document.getElementById('avatarOverlay').onclick = async e => {
     })
 }
 
-// Bind selected account
 function updateSelectedAccount(authUser) {
     let username = Lang.queryJS('landing.selectedAccount.noAccountSelected')
     if (authUser != null) {
@@ -194,11 +161,6 @@ function updateSelectedAccount(authUser) {
 }
 updateSelectedAccount(ConfigManager.getSelectedAccount())
 
-function isAdmin(authUser) {
-    return authUser != null && authUser.uuid === 'b1bbccb3-689d-4d60-bf3d-8372a3d6bea3'
-}
-
-// Bind selected server
 function updateSelectedServer(serv) {
     if (getCurrentView() === VIEWS.settings) {
         fullSettingsSave()
@@ -211,14 +173,13 @@ function updateSelectedServer(serv) {
     }
     setLaunchEnabled(serv != null)
 }
-// Real text is set in uibinder.js on distributionIndexDone.
+
 server_selection_button.innerHTML = '&#8226; ' + Lang.queryJS('landing.selectedServer.loading')
 server_selection_button.onclick = async e => {
     e.target.blur()
     await toggleServerSelection(true)
 }
 
-// Update Mojang Status Color
 const refreshMojangStatuses = async function () {
     loggerLanding.info('Refreshing Mojang Statuses..')
 
@@ -309,19 +270,7 @@ const refreshServerStatus = async (fade = false) => {
 }
 
 refreshMojangStatuses()
-// Server Status is refreshed in uibinder.js on distributionIndexDone.
 
-// Refresh statuses every hour. The status page itself refreshes every day so...
-let mojangStatusListener = setInterval(() => refreshMojangStatuses(true), 60 * 60 * 1000)
-// Set refresh rate to once every 5 minutes.
-let serverStatusListener = setInterval(() => refreshServerStatus(true), 300000)
-
-/**
- * Shows an error overlay, toggles off the launch area.
- * 
- * @param {string} title The overlay title.
- * @param {string} desc The overlay description.
- */
 function showLaunchFailure(title, desc) {
     setOverlayContent(
         title,
@@ -333,13 +282,6 @@ function showLaunchFailure(title, desc) {
     toggleLaunchArea(false)
 }
 
-/* System (Java) Scan */
-
-/**
- * Asynchronously scan the system for valid Java installations.
- * 
- * @param {boolean} launchAfter Whether we should begin to launch after scanning. 
- */
 async function asyncSystemScan(effectiveJavaOptions, launchAfter = true) {
 
     setLaunchDetails(Lang.queryJS('landing.systemScan.checking'))
@@ -352,8 +294,6 @@ async function asyncSystemScan(effectiveJavaOptions, launchAfter = true) {
     )
 
     if (jvmDetails == null) {
-        // If the result is null, no valid Java installation was found.
-        // Show this information to the user.
         setOverlayContent(
             Lang.queryJS('landing.systemScan.noCompatibleJava'),
             Lang.queryJS('landing.systemScan.installJavaMessage', { 'major': effectiveJavaOptions.suggestedMajor }),
@@ -373,7 +313,6 @@ async function asyncSystemScan(effectiveJavaOptions, launchAfter = true) {
         })
         setDismissHandler(() => {
             $('#overlayContent').fadeOut(250, () => {
-                //$('#overlayDismiss').toggle(false)
                 setOverlayContent(
                     Lang.queryJS('landing.systemScan.javaRequired', { 'major': effectiveJavaOptions.suggestedMajor }),
                     Lang.queryJS('landing.systemScan.javaRequiredMessage', { 'major': effectiveJavaOptions.suggestedMajor }),
@@ -394,18 +333,13 @@ async function asyncSystemScan(effectiveJavaOptions, launchAfter = true) {
         })
         toggleOverlay(true, true)
     } else {
-        // Java installation found, use this to launch the game.
         const javaExec = javaExecFromRoot(jvmDetails.path)
         ConfigManager.setJavaExecutable(ConfigManager.getSelectedServer(), javaExec)
         ConfigManager.save()
 
-        // We need to make sure that the updated value is on the settings UI.
-        // Just incase the settings UI is already open.
         settingsJavaExecVal.value = javaExec
         await populateJavaExecDetails(settingsJavaExecVal.value)
 
-        // TODO Callback hell, refactor
-        // TODO Move this out, separate concerns.
         if (launchAfter) {
             await dlAsync()
         }
@@ -415,8 +349,6 @@ async function asyncSystemScan(effectiveJavaOptions, launchAfter = true) {
 
 async function downloadJava(effectiveJavaOptions, launchAfter = true) {
 
-    // TODO Error handling.
-    // asset can be null.
     const asset = await latestOpenJDK(
         effectiveJavaOptions.suggestedMajor,
         ConfigManager.getDataDirectory(),
@@ -437,16 +369,12 @@ async function downloadJava(effectiveJavaOptions, launchAfter = true) {
         loggerLanding.warn(`Java Download: Expected ${asset.size} bytes but received ${received}`)
         if (!await validateLocalFile(asset.path, asset.algo, asset.hash)) {
             log.error(`Hashes do not match, ${asset.id} may be corrupted.`)
-            // Don't know how this could happen, but report it.
             throw new Error(Lang.queryJS('landing.downloadJava.javaDownloadCorruptedError'))
         }
     }
 
-    // Extract
-    // Show installing progress bar.
     remote.getCurrentWindow().setProgressBar(2)
 
-    // Wait for extration to complete.
     const eLStr = Lang.queryJS('landing.downloadJava.extractingJava')
     let dotStr = ''
     setLaunchDetails(eLStr)
@@ -461,37 +389,25 @@ async function downloadJava(effectiveJavaOptions, launchAfter = true) {
 
     const newJavaExec = await extractJdk(asset.path)
 
-    // Extraction complete, remove the loading from the OS progress bar.
     remote.getCurrentWindow().setProgressBar(-1)
 
-    // Extraction completed successfully.
     ConfigManager.setJavaExecutable(ConfigManager.getSelectedServer(), newJavaExec)
     ConfigManager.save()
 
     clearInterval(extractListener)
     setLaunchDetails(Lang.queryJS('landing.downloadJava.javaInstalled'))
 
-    // TODO Callback hell
-    // Refactor the launch functions
     asyncSystemScan(effectiveJavaOptions, launchAfter)
 
 }
 
-// Keep reference to Minecraft Process
 let proc
-// Is DiscordRPC enabled
 let hasRPC = false
-// Joined server regex
-// Change this if your server uses something different.
 const GAME_JOINED_REGEX = /\[.+\]: Sound engine started/
 const GAME_LAUNCH_REGEX = /^\[.+\]: (?:MinecraftForge .+ Initialized|ModLauncher .+ starting: .+|Loading Minecraft .+ with Fabric Loader .+)$/
 const MIN_LINGER = 5000
 
 async function dlAsync(login = true) {
-
-    // Login parameter is temporary for debug purposes. Allows testing the validation/downloads without
-    // launching the game.
-
     const loggerLaunchSuite = LoggerUtil.getLogger('LaunchSuite')
 
     setLaunchDetails(Lang.queryJS('landing.dlAsync.loadingServerInfo'))
@@ -574,7 +490,6 @@ async function dlAsync(login = true) {
         loggerLaunchSuite.info('No invalid files, skipping download.')
     }
 
-    // Remove download bar.
     remote.getCurrentWindow().setProgressBar(-1)
 
     fullRepairModule.destroyReceiver()
@@ -599,7 +514,6 @@ async function dlAsync(login = true) {
         let pb = new ProcessBuilder(serv, versionData, modLoaderData, authUser, remote.app.getVersion())
         setLaunchDetails(Lang.queryJS('landing.dlAsync.launchingGame'))
 
-        // const SERVER_JOINED_REGEX = /\[.+\]: \[CHAT\] [a-zA-Z0-9_]{1,16} joined the game/
         const SERVER_JOINED_REGEX = new RegExp(`\\[.+\\]: \\[CHAT\\] ${authUser.displayName} joined the game`)
 
         const onLoadComplete = () => {
@@ -613,10 +527,6 @@ async function dlAsync(login = true) {
         }
         const start = Date.now()
 
-        // Attach a temporary listener to the client output.
-        // Will wait for a certain bit of text meaning that
-        // the client application has started, and we can hide
-        // the progress bar stuff.
         const tempListener = function (data) {
             if (GAME_LAUNCH_REGEX.test(data.trim())) {
                 const diff = Date.now() - start
@@ -628,7 +538,6 @@ async function dlAsync(login = true) {
             }
         }
 
-        // Listener for Discord RPC.
         const gameStateChange = function (data) {
             data = data.trim()
             if (SERVER_JOINED_REGEX.test(data)) {
@@ -647,16 +556,13 @@ async function dlAsync(login = true) {
         }
 
         try {
-            // Build Minecraft process.
             proc = pb.build()
 
-            // Bind listeners to stdout.
             proc.stdout.on('data', tempListener)
             proc.stderr.on('data', gameErrorListener)
 
             setLaunchDetails(Lang.queryJS('landing.dlAsync.doneEnjoyServer'))
 
-            // Init Discord Hook
             if (distro.rawDistribution.discord != null && serv.rawServer.discord != null) {
                 DiscordWrapper.initRPC(distro.rawDistribution.discord, serv.rawServer.discord)
                 hasRPC = true
@@ -669,7 +575,6 @@ async function dlAsync(login = true) {
             }
 
         } catch (err) {
-
             loggerLaunchSuite.error('Error during launch', err)
             showLaunchFailure(Lang.queryJS('landing.dlAsync.errorDuringLaunchTitle'), Lang.queryJS('landing.dlAsync.checkConsoleForDetails'))
 
@@ -678,11 +583,6 @@ async function dlAsync(login = true) {
 
 }
 
-/**
- * News Loading Functions
- */
-
-// DOM Cache
 const newsContent = document.getElementById('newsContent')
 const newsArticleTitle = document.getElementById('newsArticleTitle')
 const newsArticleDate = document.getElementById('newsArticleDate')
@@ -692,15 +592,9 @@ const newsNavigationStatus = document.getElementById('newsNavigationStatus')
 const newsArticleContentScrollable = document.getElementById('newsArticleContentScrollable')
 const nELoadSpan = document.getElementById('nELoadSpan')
 
-// News slide caches.
 let newsActive = false
 let newsGlideCount = 0
 
-/**
- * Show the news UI via a slide animation.
- * 
- * @param {boolean} up True to slide up, otherwise false. 
- */
 function slide_(up) {
     const lCUpper = document.querySelector('#landingContainer > #upper')
     const lCLLeft = document.querySelector('#landingContainer > #lower > #left')
@@ -719,8 +613,6 @@ function slide_(up) {
         lCLRight.style.top = '-200vh'
         newsBtn.style.top = '130vh'
         newsContainer.style.top = '0px'
-        //date.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric'})
-        //landingContainer.style.background = 'rgba(29, 29, 29, 0.55)'
         landingContainer.style.background = 'rgba(0, 0, 0, 0.50)'
         setTimeout(() => {
             if (newsGlideCount === 1) {
@@ -745,9 +637,7 @@ function slide_(up) {
     }
 }
 
-// Bind news button.
 document.getElementById('newsButton').onclick = () => {
-    // Toggle tabbing.
     if (newsActive) {
         $('#landingContainer *').removeAttr('tabindex')
         $('#newsContainer *').attr('tabindex', '-1')
@@ -765,17 +655,10 @@ document.getElementById('newsButton').onclick = () => {
     newsActive = !newsActive
 }
 
-// Array to store article meta.
 let newsArr = null
 
-// News load animation listener.
 let newsLoadingListener = null
 
-/**
- * Set the news loading animation.
- * 
- * @param {boolean} val True to set loading animation, otherwise false.
- */
 function setNewsLoading(val) {
     if (val) {
         const nLStr = Lang.queryJS('landing.news.checking')
@@ -797,7 +680,6 @@ function setNewsLoading(val) {
     }
 }
 
-// Bind retry button.
 newsErrorRetry.onclick = () => {
     $('#newsErrorFailed').fadeOut(250, () => {
         initNews()
@@ -813,12 +695,6 @@ newsArticleContentScrollable.onscroll = (e) => {
     }
 }
 
-/**
- * Reload the news without restarting.
- * 
- * @returns {Promise.<void>} A promise which resolves when the news
- * content has finished loading and transitioning.
- */
 function reloadNews() {
     return new Promise((resolve, reject) => {
         $('#newsContent').fadeOut(250, () => {
@@ -832,9 +708,6 @@ function reloadNews() {
 
 let newsAlertShown = false
 
-/**
- * Show the news alert indicating there is new news.
- */
 function showNewsAlert() {
     newsAlertShown = true
     $(newsButtonAlert).fadeIn(250)
@@ -850,13 +723,6 @@ async function digestMessage(str) {
     return hashHex
 }
 
-/**
- * Initialize News UI. This will load the news and prepare
- * the UI accordingly.
- * 
- * @returns {Promise.<void>} A promise which resolves when the news
- * content has finished loading and transitioning.
- */
 async function initNews() {
 
     setNewsLoading(true)
@@ -866,14 +732,12 @@ async function initNews() {
     newsArr = news?.articles || null
 
     if (newsArr == null) {
-        // News Loading Failed
         setNewsLoading(false)
 
         await $('#newsErrorLoading').fadeOut(250).promise()
         await $('#newsErrorFailed').fadeIn(250).promise()
 
     } else if (newsArr.length === 0) {
-        // No News Articles
         setNewsLoading(false)
 
         ConfigManager.setNewsCache({
@@ -886,7 +750,6 @@ async function initNews() {
         await $('#newsErrorLoading').fadeOut(250).promise()
         await $('#newsErrorNone').fadeIn(250).promise()
     } else {
-        // Success
         setNewsLoading(false)
 
         const lN = newsArr[0]
@@ -898,8 +761,6 @@ async function initNews() {
         if (cached.date != null && cached.content != null) {
 
             if (new Date(cached.date) >= newDate) {
-
-                // Compare Content
                 if (cached.content !== newHash) {
                     isNew = true
                     showNewsAlert()
@@ -909,7 +770,6 @@ async function initNews() {
                         showNewsAlert()
                     }
                 }
-
             } else {
                 isNew = true
                 showNewsAlert()
@@ -946,21 +806,11 @@ async function initNews() {
 
 }
 
-/**
- * Add keyboard controls to the news UI. Left and right arrows toggle
- * between articles. If you are on the landing page, the up arrow will
- * open the news UI.
- */
 document.addEventListener('keydown', (e) => {
     if (newsActive) {
         if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
             document.getElementById(e.key === 'ArrowRight' ? 'newsNavigateRight' : 'newsNavigateLeft').click()
         }
-        // Interferes with scrolling an article using the down arrow.
-        // Not sure of a straight forward solution at this point.
-        // if(e.key === 'ArrowDown'){
-        //     document.getElementById('newsButton').click()
-        // }
     } else {
         if (getCurrentView() === VIEWS.landing) {
             if (e.key === 'ArrowUp') {
@@ -970,12 +820,6 @@ document.addEventListener('keydown', (e) => {
     }
 })
 
-/**
- * Display a news article on the UI.
- * 
- * @param {Object} articleObject The article meta object.
- * @param {number} index The article index.
- */
 function displayArticle(articleObject, index) {
     newsArticleTitle.innerHTML = articleObject.title
     newsArticleTitle.href = articleObject.link
@@ -994,10 +838,6 @@ function displayArticle(articleObject, index) {
     newsContent.setAttribute('article', index - 1)
 }
 
-/**
- * Load news information from the RSS feed specified in the
- * distribution index.
- */
 async function loadNews() {
 
     const distroData = await DistroAPI.getDistribution()
@@ -1017,17 +857,12 @@ async function loadNews() {
                 const articles = []
 
                 for (let i = 0; i < items.length; i++) {
-                    // JQuery Element
                     const el = $(items[i])
-
-                    // Resolve date.
                     const date = new Date(el.find('pubDate').text()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric' })
 
-                    // Resolve comments.
                     let comments = el.find('slash\\:comments').text() || '0'
                     comments = comments + ' Comment' + (comments === '1' ? '' : 's')
 
-                    // Fix relative links in content.
                     let content = el.find('content\\:encoded').text()
                     let regex = /src="(?!http:\/\/|https:\/\/)(.+?)"/g
                     let matches
@@ -1039,7 +874,6 @@ async function loadNews() {
                     let title = el.find('title').text()
                     let author = el.find('dc\\:creator').text()
 
-                    // Generate article.
                     articles.push(
                         {
                             link,
