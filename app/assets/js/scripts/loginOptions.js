@@ -1,3 +1,7 @@
+/**
+ * @file loginOptions.js
+ * Base by Daniel S.
+ */
 const loginOptionsCancelContainer = document.getElementById('loginOptionCancelContainer')
 const loginOptionMicrosoft = document.getElementById('loginOptionMicrosoft')
 const loginOptionMojang = document.getElementById('loginOptionMojang')
@@ -38,8 +42,6 @@ loginOptionMojang.onclick = (e) => {
 
 loginOptionsCancelButton.onclick = (e) => {
     switchView(getCurrentView(), loginOptionsViewOnCancel, 500, 500, () => {
-        // Clear login values (Mojang login)
-        // No cleanup needed for Microsoft.
         loginUsername.value = ''
         loginPassword.value = ''
         if(loginOptionsViewCancelHandler != null){
