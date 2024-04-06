@@ -1,5 +1,5 @@
 /**
- * landing.js
+ * @file landing.js
  * Base by Daniel S.
  * Modified by Plhume (06/04/2024)
  */
