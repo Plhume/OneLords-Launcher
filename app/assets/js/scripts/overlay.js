@@ -1,13 +1,6 @@
 /**
- * Script for overlay.ejs
- */
-
-/* Overlay Wrapper Functions */
-
-/**
- * Check to see if the overlay is visible.
- * 
- * @returns {boolean} Whether or not the overlay is visible.
+ * @file overlay.js
+ * Base by Daniel S.
  */
 function isOverlayVisible(){
     return document.getElementById('main').hasAttribute('overlay')
@@ -15,21 +8,11 @@ function isOverlayVisible(){
 
 let overlayHandlerContent
 
-/**
- * Overlay keydown handler for a non-dismissable overlay.
- * 
- * @param {KeyboardEvent} e The keydown event.
- */
 function overlayKeyHandler (e){
     if(e.key === 'Enter' || e.key === 'Escape'){
         document.getElementById(overlayHandlerContent).getElementsByClassName('overlayKeybindEnter')[0].click()
     }
 }
-/**
- * Overlay keydown handler for a dismissable overlay.
- * 
- * @param {KeyboardEvent} e The keydown event.
- */
 function overlayKeyDismissableHandler (e){
     if(e.key === 'Enter'){
         document.getElementById(overlayHandlerContent).getElementsByClassName('overlayKeybindEnter')[0].click()
@@ -38,13 +21,6 @@ function overlayKeyDismissableHandler (e){
     }
 }
 
-/**
- * Bind overlay keydown listeners for escape and exit.
- * 
- * @param {boolean} state Whether or not to add new event listeners.
- * @param {string} content The overlay content which will be shown.
- * @param {boolean} dismissable Whether or not the overlay is dismissable 
- */
 function bindOverlayKeys(state, content, dismissable){
     overlayHandlerContent = content
     document.removeEventListener('keydown', overlayKeyHandler)
@@ -58,13 +34,6 @@ function bindOverlayKeys(state, content, dismissable){
     }
 }
 
-/**
- * Toggle the visibility of the overlay.
- * 
- * @param {boolean} toggleState True to display, false to hide.
- * @param {boolean} dismissable Optional. True to show the dismiss option, otherwise false.
- * @param {string} content Optional. The content div to be shown.
- */
 function toggleOverlay(toggleState, dismissable = false, content = 'overlayContent'){
     if(toggleState == null){
         toggleState = !document.getElementById('main').hasAttribute('overlay')
@@ -76,7 +45,6 @@ function toggleOverlay(toggleState, dismissable = false, content = 'overlayConte
     bindOverlayKeys(toggleState, content, dismissable)
     if(toggleState){
         document.getElementById('main').setAttribute('overlay', true)
-        // Make things untabbable.
         $('#main *').attr('tabindex', '-1')
         $('#' + content).parent().children().hide()
         $('#' + content).show()
@@ -95,7 +63,6 @@ function toggleOverlay(toggleState, dismissable = false, content = 'overlayConte
         })
     } else {
         document.getElementById('main').removeAttribute('overlay')
-        // Make things tabbable.
         $('#main *').removeAttr('tabindex')
         $('#overlayContainer').fadeOut({
             duration: 250,
@@ -122,14 +89,6 @@ async function toggleServerSelection(toggleState){
     toggleOverlay(toggleState, true, 'serverSelectContent')
 }
 
-/**
- * Set the content of the overlay.
- * 
- * @param {string} title Overlay title text.
- * @param {string} description Overlay description text.
- * @param {string} acknowledge Acknowledge button text.
- * @param {string} dismiss Dismiss button text.
- */
 function setOverlayContent(title, description, acknowledge, dismiss = Lang.queryJS('overlay.dismiss')){
     document.getElementById('overlayTitle').innerHTML = title
     document.getElementById('overlayDesc').innerHTML = description
@@ -137,12 +96,6 @@ function setOverlayContent(title, description, acknowledge, dismiss = Lang.query
     document.getElementById('overlayDismiss').innerHTML = dismiss
 }
 
-/**
- * Set the onclick handler of the overlay acknowledge button.
- * If the handler is null, a default handler will be added.
- * 
- * @param {function} handler 
- */
 function setOverlayHandler(handler){
     if(handler == null){
         document.getElementById('overlayAcknowledge').onclick = () => {
@@ -153,12 +106,6 @@ function setOverlayHandler(handler){
     }
 }
 
-/**
- * Set the onclick handler of the overlay dismiss button.
- * If the handler is null, a default handler will be added.
- * 
- * @param {function} handler 
- */
 function setDismissHandler(handler){
     if(handler == null){
         document.getElementById('overlayDismiss').onclick = () => {
@@ -168,8 +115,6 @@ function setDismissHandler(handler){
         document.getElementById('overlayDismiss').onclick = handler
     }
 }
-
-/* Server Select View */
 
 document.getElementById('serverSelectConfirm').addEventListener('click', async () => {
     const listings = document.getElementsByClassName('serverListing')
@@ -182,7 +127,6 @@ document.getElementById('serverSelectConfirm').addEventListener('click', async (
             return
         }
     }
-    // None are selected? Not possible right? Meh, handle it.
     if(listings.length > 0){
         const serv = (await DistroAPI.getDistribution()).getServerById(listings[i].getAttribute('servid'))
         updateSelectedServer(serv)
@@ -205,7 +149,6 @@ document.getElementById('accountSelectConfirm').addEventListener('click', async 
             return
         }
     }
-    // None are selected? Not possible right? Meh, handle it.
     if(listings.length > 0){
         const authAcc = ConfigManager.setSelectedAccount(listings[0].getAttribute('uuid'))
         ConfigManager.save()
@@ -218,7 +161,6 @@ document.getElementById('accountSelectConfirm').addEventListener('click', async 
     }
 })
 
-// Bind server select cancel button.
 document.getElementById('serverSelectCancel').addEventListener('click', () => {
     toggleOverlay(false)
 })
