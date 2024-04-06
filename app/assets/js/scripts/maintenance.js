@@ -1,3 +1,7 @@
+/**
+ * @file maintenance.js
+ * By Plhume
+ */
 const maintenance_text = document.getElementById('maintenanceButton')
 
 function setMaintenanceStatus(details) {
