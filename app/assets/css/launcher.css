@@ -238,7 +238,7 @@ button {
     align-items: center;
     height: 100%;
     width: 100%;
-    background: rgba(0, 0, 0, 0.50);
+    background: rgba(0, 0, 0, 0) 100%;
 }
 
 #welcomeContent {
@@ -289,12 +289,12 @@ button {
 */
 
 #welcomeImageSeal {
-    border-radius: 50%;
+    /*border-radius: 50%;
     border: 2px solid #cad7e1;
-    background: rgba(1, 2, 1, 0.5);
+    background: rgba(1, 2, 1, 0.5);*/
     height: 125px;
     width: 125px;
-    box-shadow: 0px 0px 10px 0px rgb(0, 0, 0);
+    /*box-shadow: 0px 0px 10px 0px rgb(0, 0, 0);*/
     margin-bottom: 5%;
     margin-top: 10%;
 }
@@ -409,7 +409,7 @@ button {
     height: 100%;
     width: 100%;
     transition: filter 0.25s ease;
-    background: rgba(0, 0, 0, 0.50);
+    background: rgba(0, 0, 0, 0) 100%;
 }
 
 /* Login cancel button styles. */
@@ -956,7 +956,7 @@ button {
     height: 100%;
     width: 100%;
     transition: filter 0.25s ease;
-    background: rgba(0, 0, 0, 0.50);
+    background: rgba(0, 0, 0, 0) 100%;
 }
 
 #waitingContent {
@@ -1039,7 +1039,7 @@ button {
     height: 100%;
     width: 100%;
     transition: filter 0.25s ease;
-    background: rgba(0, 0, 0, 0.50);
+    background: rgba(0, 0, 0, 0) 100%;
 }
 
 #loginOptionsContent {
@@ -4254,7 +4254,7 @@ input:checked+.toggleSwitchSlider:before {
     height: 100%;
     width: 100%;
     transition: filter 0.25s ease;
-    background: rgba(0, 0, 0, 0.50);
+    background: rgba(0, 0, 0, 0) 100%;
 }
 
 #maintenanceContent {
