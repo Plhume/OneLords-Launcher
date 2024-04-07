@@ -1130,14 +1130,14 @@ button {
     position: relative;
     height: 100%;
     display: flex;
-    background-color: rgba(0, 0, 0, 0.50);
+    background-color: rgba(0, 0, 0, 0) 100%;
     transition: background-color 0.25s cubic-bezier(.02, .01, .47, 1);
 }
 
 /* Drop shadow displayed when content is scrolled out of view. */
 #settingsContainer:before {
     content: '';
-    background: linear-gradient(rgba(0, 0, 0, 0.25), transparent);
+    background: rgba(0, 0, 0, 0) 100%;
     width: 100%;
     height: 5px;
     position: absolute;
@@ -2655,7 +2655,9 @@ input:checked+.toggleSwitchSlider:before {
 #landingContainer>#lower {
     height: 23%;
     display: flex;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    background: rgba(0, 0, 0, 0) 100%;
+    overflow: hidden;
+
 }
 
 #landingContainer>#lower>#left {
@@ -2673,14 +2675,14 @@ input:checked+.toggleSwitchSlider:before {
     top: 25px;
     display: inline-flex;
     line-height: 24px;
-    left: 50px;
+    left: 100;
 }
 
 #landingContainer>#lower>#center {
     position: relative;
     transition: top 2s ease;
     top: 0px;
-    height: 100%;
+    height: 10;
     width: 34%;
     display: inline-flex;
     justify-content: center;
@@ -2699,6 +2701,8 @@ input:checked+.toggleSwitchSlider:before {
     top: 0px;
     height: 100%;
     width: 33%;
+    left: 100;
+    overflow: hidden;
     display: inline-flex;
 }
 
@@ -3179,18 +3183,20 @@ input:checked+.toggleSwitchSlider:before {
 
 /* User profile avatar container. */
 #avatarContainer {
-    border-radius: 50%;
-    border: 2px solid #cad7e1;
+    border-radius: 10px;
+    /*border: 2px solid #cad7e1;*/
     box-sizing: border-box;
     background: rgba(1, 2, 1, 0.5);
-    height: 70px;
-    width: 70px;
-    box-shadow: 0px 0px 10px 0px rgb(0, 0, 0);
+    /*box-shadow: 0px 0px 10px 0px rgb(0, 0, 0);*/
     overflow: hidden;
-    position: relative;
+    position: absolute;
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
+    height: 3rem;
+    width: 3rem;
+    margin-left: -40vh;
+    margin-top: 30vh
 }
 
 /* Avatar edit overlay. */
@@ -3228,7 +3234,6 @@ input:checked+.toggleSwitchSlider:before {
     min-width: 135px;
     font-weight: 900;
     letter-spacing: 1px;
-    text-shadow: 0px 0px 20px black;
     position: absolute;
     right: 95px;
     text-align: right;
@@ -3301,19 +3306,23 @@ input:checked+.toggleSwitchSlider:before {
 }
 
 #settingsMediaContainer {
-    position: relative;
+    position: relative
 }
 
 /* Settings icon colors. */
 #settingsSVG {
     stroke: #ffffff;
-    height: 15px;
+    width: 50px; /* Largeur de 200 pixels */
+    height: 50px;
+    margin-left: 19rem;
+    margin-top: 6rem
 }
 
 .mediaButton:hover #settingsSVG,
 .mediaButton:focus #settingsSVG,
 .mediaButton:active #settingsSVG {
-    height: 23px;
+    width: 58px; /* Largeur de 200 pixels */
+    height: 58px;
 }
 
 /* Settings tooltip styles. */
@@ -3628,10 +3637,12 @@ input:checked+.toggleSwitchSlider:before {
     font-weight: 900;
     letter-spacing: 2px;
     text-shadow: 0px 0px 0px #bebcbb;
-    font-size: 20px;
+    font-size: 28px;
     padding: 0px;
     transition: 0.25s ease;
     outline: none;
+    height: 50;
+    margin-top: 11vh
 }
 
 #launch_button:hover,
@@ -3652,9 +3663,9 @@ input:checked+.toggleSwitchSlider:before {
 
 /* Launch details main container, hidden until launch processing begins. */
 #launch_details {
-    position: relative;
-    top: 25px;
+    margin-top: 11vh;
     display: none;
+    font-size: 30px;
 }
 
 /* Left side of launch details container, displays percentage and a divider. */
@@ -3678,6 +3689,8 @@ input:checked+.toggleSwitchSlider:before {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-left: 10px;
+    margin-top: 5px;
 }
 
 /* Button which opens the server selection view. */
@@ -3718,7 +3731,7 @@ input:checked+.toggleSwitchSlider:before {
 
 /* Span which displays information about the status of the launch process. */
 #launch_details_text {
-    font-size: 11px;
+    font-size: 12px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -3744,7 +3757,7 @@ input:checked+.toggleSwitchSlider:before {
     justify-content: center;
     width: 100%;
     height: calc(100% - 22px);
-    background: rgba(0, 0, 0, 0.50);
+    background: rgba(0, 0, 0, 0) 100%;
 }
 
 /* Main overlay content. */
@@ -4319,4 +4332,13 @@ input:checked+.toggleSwitchSlider:before {
 #maintenanceButtonContent {
     display: flex;
     align-items: center;
+}
+
+.playBar {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 135px;
+    background-color: rgba(128, 128, 128, 0.5);
+    bottom: 0;
 }

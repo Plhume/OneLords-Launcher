@@ -42,10 +42,10 @@ const loggerLanding = LoggerUtil.getLogger('Landing')
 
 function toggleLaunchArea(loading) {
     if (loading) {
-        launch_details.style.display = 'flex'
+        //launch_details.style.display = 'flex'
         launch_content.style.display = 'none'
     } else {
-        launch_details.style.display = 'none'
+        //launch_details.style.display = 'none'
         launch_content.style.display = 'inline-flex'
     }
 }
@@ -67,6 +67,10 @@ function setDownloadPercentage(percent) {
 
 function setLaunchEnabled(val) {
     document.getElementById('launch_button').disabled = !val
+}
+
+function setLaunchInfo(info) {
+    document.getElementById('launch_button').innerHTML = info
 }
 
 document.getElementById('launch_button').addEventListener('click', async e => {
@@ -95,9 +99,10 @@ document.getElementById('launch_button').addEventListener('click', async e => {
                 .then(async maintenanceStatus => {
                     if (maintenanceStatus == true) {
                         if (ConfigManager.getSelectedAccount().uuid == 'b1bbccb3689d4d60bf3d8372a3d6bea3') {
-                            setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
-                            toggleLaunchArea(true)
-                            setLaunchPercentage(0, 100)
+                            //setLaunchDetails('Lancement du jeu...')
+                            //toggleLaunchArea(true)
+                            //setLaunchPercentage(0, 100)
+                            setLaunchInfo('Lancement du jeu...')
 
                             const details = await validateSelectedJvm(ensureJavaDirIsRoot(jExe), server.effectiveJavaOptions.supported)
                             if (details != null) {
@@ -108,12 +113,14 @@ document.getElementById('launch_button').addEventListener('click', async e => {
                                 await asyncSystemScan(server.effectiveJavaOptions)
                             }
                         } else {
-                            setLaunchDetails(Lang.queryJS('landing.launch.maintenance'))
+                            setLaunchInfo('Maintenance en cours')
+                            //setLaunchDetails(Lang.queryJS('landing.launch.maintenance'))
                         }
                     } else {
-                        setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
-                        toggleLaunchArea(true)
-                        setLaunchPercentage(0, 100)
+                        setLaunchInfo('Lancement du jeu...')
+                        //setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
+                        //toggleLaunchArea(true)
+                        //setLaunchPercentage(0, 100)
 
                         const details = await validateSelectedJvm(ensureJavaDirIsRoot(jExe), server.effectiveJavaOptions.supported)
                         if (details != null) {
@@ -140,12 +147,12 @@ document.getElementById('settingsMediaButton').onclick = async e => {
     switchView(getCurrentView(), VIEWS.settings)
 }
 
-document.getElementById('avatarOverlay').onclick = async e => {
+/*document.getElementById('avatarOverlay').onclick = async e => {
     await prepareSettings()
     switchView(getCurrentView(), VIEWS.settings, 500, 500, () => {
         settingsNavItemListener(document.getElementById('settingsNavAccount'), false)
     })
-}
+}*/
 
 function updateSelectedAccount(authUser) {
     let username = Lang.queryJS('landing.selectedAccount.noAccountSelected')
@@ -154,10 +161,10 @@ function updateSelectedAccount(authUser) {
             username = authUser.displayName
         }
         if (authUser.uuid != null) {
-            document.getElementById('avatarContainer').style.backgroundImage = `url('https://mc-heads.net/body/${authUser.uuid}/right')`
+            document.getElementById('avatarContainer').style.backgroundImage = `url(https://mc-heads.net/avatar/${authUser.uuid}/400)`
         }
     }
-    user_text.innerHTML = username
+    //user_text.innerHTML = username
 }
 updateSelectedAccount(ConfigManager.getSelectedAccount())
 
@@ -167,18 +174,18 @@ function updateSelectedServer(serv) {
     }
     ConfigManager.setSelectedServer(serv != null ? serv.rawServer.id : null)
     ConfigManager.save()
-    server_selection_button.innerHTML = '&#8226; ' + (serv != null ? serv.rawServer.name : Lang.queryJS('landing.noSelection'))
+    //server_selection_button.innerHTML = '&#8226; ' + (serv != null ? serv.rawServer.name : Lang.queryJS('landing.noSelection'))
     if (getCurrentView() === VIEWS.settings) {
         animateSettingsTabRefresh()
     }
     setLaunchEnabled(serv != null)
 }
 
-server_selection_button.innerHTML = '&#8226; ' + Lang.queryJS('landing.selectedServer.loading')
-server_selection_button.onclick = async e => {
+//server_selection_button.innerHTML = '&#8226; ' + Lang.queryJS('landing.selectedServer.loading')
+/*server_selection_button.onclick = async e => {
     e.target.blur()
     await toggleServerSelection(true)
-}
+}*/
 
 const refreshMojangStatuses = async function () {
     loggerLanding.info('Refreshing Mojang Statuses..')
@@ -263,8 +270,8 @@ const refreshServerStatus = async (fade = false) => {
             $('#server_status_wrapper').fadeIn(500)
         })
     } else {
-        document.getElementById('landingPlayerLabel').innerHTML = pLabel
-        document.getElementById('player_count').innerHTML = pVal
+        //document.getElementById('landingPlayerLabel').innerHTML = pLabel
+        //document.getElementById('player_count').innerHTML = pVal
     }
 
 }
@@ -279,14 +286,15 @@ function showLaunchFailure(title, desc) {
     )
     setOverlayHandler(null)
     toggleOverlay(true)
-    toggleLaunchArea(false)
+    //toggleLaunchArea(false)
 }
 
 async function asyncSystemScan(effectiveJavaOptions, launchAfter = true) {
 
-    setLaunchDetails(Lang.queryJS('landing.systemScan.checking'))
-    toggleLaunchArea(true)
-    setLaunchPercentage(0, 100)
+    setLaunchInfo(Lang.queryJS('landing.systemScan.checking'))
+    //setLaunchDetails(Lang.queryJS('landing.systemScan.checking'))
+    //toggleLaunchArea(true)
+    //setLaunchPercentage(0, 100)
 
     const jvmDetails = await discoverBestJvmInstallation(
         ConfigManager.getDataDirectory(),
@@ -301,7 +309,8 @@ async function asyncSystemScan(effectiveJavaOptions, launchAfter = true) {
             Lang.queryJS('landing.systemScan.installJavaManually')
         )
         setOverlayHandler(() => {
-            setLaunchDetails(Lang.queryJS('landing.systemScan.javaDownloadPrepare'))
+            setLaunchInfo(Lang.queryJS('landing.systemScan.javaDownloadPrepare'))
+            //setLaunchDetails(Lang.queryJS('landing.systemScan.javaDownloadPrepare'))
             toggleOverlay(false)
 
             try {
@@ -320,7 +329,7 @@ async function asyncSystemScan(effectiveJavaOptions, launchAfter = true) {
                     Lang.queryJS('landing.systemScan.javaRequiredCancel')
                 )
                 setOverlayHandler(() => {
-                    toggleLaunchArea(false)
+                    //toggleLaunchArea(false)
                     toggleOverlay(false)
                 })
                 setDismissHandler(() => {
@@ -377,14 +386,16 @@ async function downloadJava(effectiveJavaOptions, launchAfter = true) {
 
     const eLStr = Lang.queryJS('landing.downloadJava.extractingJava')
     let dotStr = ''
-    setLaunchDetails(eLStr)
+    setLaunchInfo(eLStr)
+    //setLaunchDetails(eLStr)
     const extractListener = setInterval(() => {
         if (dotStr.length >= 3) {
             dotStr = ''
         } else {
             dotStr += '.'
         }
-        setLaunchDetails(eLStr + dotStr)
+        setLaunchInfo(eLStr + dotStr)
+        //setLaunchDetails(eLStr + dotStr)
     }, 750)
 
     const newJavaExec = await extractJdk(asset.path)
@@ -395,7 +406,8 @@ async function downloadJava(effectiveJavaOptions, launchAfter = true) {
     ConfigManager.save()
 
     clearInterval(extractListener)
-    setLaunchDetails(Lang.queryJS('landing.downloadJava.javaInstalled'))
+    setLaunchInfo(Lang.queryJS('landing.downloadJava.javaInstalled'))
+    //setLaunchDetails(Lang.queryJS('landing.downloadJava.javaInstalled'))
 
     asyncSystemScan(effectiveJavaOptions, launchAfter)
 
@@ -410,7 +422,8 @@ const MIN_LINGER = 5000
 async function dlAsync(login = true) {
     const loggerLaunchSuite = LoggerUtil.getLogger('LaunchSuite')
 
-    setLaunchDetails(Lang.queryJS('landing.dlAsync.loadingServerInfo'))
+    setLaunchInfo(Lang.queryJS('landing.dlAsync.loadingServerInfo'))
+    //setLaunchDetails(Lang.queryJS('landing.dlAsync.loadingServerInfo'))
 
     let distro
 
@@ -431,10 +444,11 @@ async function dlAsync(login = true) {
             return
         }
     }
-
-    setLaunchDetails(Lang.queryJS('landing.dlAsync.pleaseWait'))
-    toggleLaunchArea(true)
-    setLaunchPercentage(0, 100)
+    
+    setLaunchInfo(Lang.queryJS('landing.dlAsync.pleaseWait'))
+    //setLaunchDetails(Lang.queryJS('landing.dlAsync.pleaseWait'))
+    //toggleLaunchArea(true)
+    //setLaunchPercentage(0, 100)
 
     const fullRepairModule = new FullRepair(
         ConfigManager.getCommonDirectory(),
@@ -458,13 +472,14 @@ async function dlAsync(login = true) {
     })
 
     loggerLaunchSuite.info('Validating files.')
-    setLaunchDetails(Lang.queryJS('landing.dlAsync.validatingFileIntegrity'))
+    setLaunchInfo(Lang.queryJS('landing.dlAsync.validatingFileIntegrity'))
+    //setLaunchDetails(Lang.queryJS('landing.dlAsync.validatingFileIntegrity'))
     let invalidFileCount = 0
     try {
         invalidFileCount = await fullRepairModule.verifyFiles(percent => {
-            setLaunchPercentage(percent)
+            //setLaunchPercentage(percent)
         })
-        setLaunchPercentage(100)
+        //setLaunchPercentage(100)
     } catch (err) {
         loggerLaunchSuite.error('Error during file validation.')
         showLaunchFailure(Lang.queryJS('landing.dlAsync.errorDuringFileVerificationTitle'), err.displayable || Lang.queryJS('landing.dlAsync.seeConsoleForDetails'))
@@ -474,8 +489,9 @@ async function dlAsync(login = true) {
 
     if (invalidFileCount > 0) {
         loggerLaunchSuite.info('Downloading files.')
-        setLaunchDetails(Lang.queryJS('landing.dlAsync.downloadingFiles'))
-        setLaunchPercentage(0)
+        setLaunchInfo(Lang.queryJS('landing.dlAsync.downloadingFiles'))
+        //setLaunchDetails(Lang.queryJS('landing.dlAsync.downloadingFiles'))
+        //setLaunchPercentage(0)
         try {
             await fullRepairModule.download(percent => {
                 setDownloadPercentage(percent)
@@ -494,7 +510,8 @@ async function dlAsync(login = true) {
 
     fullRepairModule.destroyReceiver()
 
-    setLaunchDetails(Lang.queryJS('landing.dlAsync.preparingToLaunch'))
+    setLaunchInfo(Lang.queryJS('landing.dlAsync.preparingToLaunch'))
+    //setLaunchDetails(Lang.queryJS('landing.dlAsync.preparingToLaunch'))
 
     const mojangIndexProcessor = new MojangIndexProcessor(
         ConfigManager.getCommonDirectory(),
@@ -512,12 +529,13 @@ async function dlAsync(login = true) {
         const authUser = ConfigManager.getSelectedAccount()
         loggerLaunchSuite.info(`Sending selected account (${authUser.displayName}) to ProcessBuilder.`)
         let pb = new ProcessBuilder(serv, versionData, modLoaderData, authUser, remote.app.getVersion())
-        setLaunchDetails(Lang.queryJS('landing.dlAsync.launchingGame'))
+        setLaunchInfo(Lang.queryJS('landing.dlAsync.launchingGame'))
+        //setLaunchDetails(Lang.queryJS('landing.dlAsync.launchingGame'))
 
         const SERVER_JOINED_REGEX = new RegExp(`\\[.+\\]: \\[CHAT\\] ${authUser.displayName} joined the game`)
 
         const onLoadComplete = () => {
-            toggleLaunchArea(false)
+            //toggleLaunchArea(false)
             if (hasRPC) {
                 DiscordWrapper.updateDetails(Lang.queryJS('landing.discord.loading'))
                 proc.stdout.on('data', gameStateChange)
@@ -561,7 +579,10 @@ async function dlAsync(login = true) {
             proc.stdout.on('data', tempListener)
             proc.stderr.on('data', gameErrorListener)
 
-            setLaunchDetails(Lang.queryJS('landing.dlAsync.doneEnjoyServer'))
+            setTimeout(() => {
+                setLaunchInfo('Jouer')
+            }, 5000)
+            setLaunchInfo(Lang.queryJS('landing.dlAsync.doneEnjoyServer'))
 
             if (distro.rawDistribution.discord != null && serv.rawServer.discord != null) {
                 DiscordWrapper.initRPC(distro.rawDistribution.discord, serv.rawServer.discord)
@@ -613,7 +634,7 @@ function slide_(up) {
         lCLRight.style.top = '-200vh'
         newsBtn.style.top = '130vh'
         newsContainer.style.top = '0px'
-        landingContainer.style.background = 'rgba(0, 0, 0, 0.50)'
+        landingContainer.style.background = 'rgba(0, 0, 0, 0) 100%'
         setTimeout(() => {
             if (newsGlideCount === 1) {
                 lCLCenter.style.transition = 'none'
@@ -637,7 +658,7 @@ function slide_(up) {
     }
 }
 
-document.getElementById('newsButton').onclick = () => {
+/*document.getElementById('newsButton').onclick = () => {
     if (newsActive) {
         $('#landingContainer *').removeAttr('tabindex')
         $('#newsContainer *').attr('tabindex', '-1')
@@ -899,4 +920,4 @@ async function loadNews() {
     })
 
     return await promise
-}
+}*/
