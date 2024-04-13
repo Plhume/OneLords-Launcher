@@ -1130,7 +1130,7 @@ button {
     position: relative;
     height: 100%;
     display: flex;
-    background-color: rgba(0, 0, 0, 0) 100%;
+    background-color: rgba(0, 0, 0, 0.842) 100%;
     transition: background-color 0.25s cubic-bezier(.02, .01, .47, 1);
 }
 
@@ -1177,7 +1177,9 @@ button {
 
 /* Navigation items outer container. */
 #settingsNavItemsContainer {
-    height: 85%;
+    height: 100%;
+    font-size: large;
+    font-weight: bold;
     display: flex;
     justify-content: center;
     box-sizing: border-box;
@@ -1187,6 +1189,8 @@ button {
 #settingsNavItemsContent {
     height: 100%;
     display: flex;
+    font-size: large;
+    font-weight: bold;
     flex-direction: column;
     position: relative;
 }
@@ -1196,6 +1200,8 @@ button {
     background: none;
     border: none;
     text-align: left;
+    font-size: large;
+    font-weight: bold;
     margin: 5px 0px;
     padding: 0px 20px;
     color: grey;
@@ -1243,6 +1249,8 @@ button {
     text-align: left;
     margin: 5px 0px;
     padding: 0px 20px;
+    font-size: large;
+    font-weight: bold;
     color: white;
     cursor: pointer;
     outline: none;
@@ -2618,6 +2626,7 @@ input:checked+.toggleSwitchSlider:before {
 /* Main content container. */
 #landingContainer {
     height: 100%;
+    width: 100%;
     position: relative;
     transition: background 2s ease;
     overflow-y: hidden;
@@ -2643,6 +2652,17 @@ input:checked+.toggleSwitchSlider:before {
     display: inline-flex;
     width: 70%;
     height: 100%;
+}
+
+#landingContainer #upper #center {
+    position: absolute;
+    transition: top 2s ease;
+    top: -20px;
+    margin-left: 40vh;
+    height: auto;
+    max-width: 100%;
+    width: 34%;
+    justify-content: center;
 }
 
 #landingContainer>#upper>#right {
@@ -3312,10 +3332,10 @@ input:checked+.toggleSwitchSlider:before {
 /* Settings icon colors. */
 #settingsSVG {
     stroke: #ffffff;
-    width: 50px; /* Largeur de 200 pixels */
-    height: 50px;
-    margin-left: 19rem;
-    margin-top: 6rem
+    height: 3rem;
+    width: 3rem;
+    margin-left: 48vh;
+    margin-top: 10vw
 }
 
 .mediaButton:hover #settingsSVG,
@@ -4224,6 +4244,14 @@ input:checked+.toggleSwitchSlider:before {
     z-index: 400;
 }
 
+#loadText {
+    font-family: 'Avenir Medium';
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    margin-top: 25px;
+}
+
 /* Rotating animation for the spinner. */
 @keyframes rotating {
     from {
@@ -4334,11 +4362,155 @@ input:checked+.toggleSwitchSlider:before {
     align-items: center;
 }
 
+/*******************************************************************************
+ *                                                                             *
+ * Update View (update.ejs)                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+ #updateContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    transition: filter 0.25s ease;
+    background: rgba(0, 0, 0, 0) 100%;
+}
+
+#updateContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    top: -10%;
+    position: relative;
+}
+
+#updateTitle {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 25px;
+}
+
+#updateSubtitle {
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 25px;
+}
+
+#updateButton {
+    background: none;
+    font-weight: bold;
+    letter-spacing: 2px;
+    border: none;
+    padding: 15px 5px;
+    margin: 10px 0px;
+    cursor: pointer;
+    position: relative;
+    right: -20px;
+    transition: 0.5s ease;
+    margin-top: 5%;
+    margin-bottom: -5%;
+}
+
+#updateButton:disabled {
+    color: rgba(255, 255, 255, 0.75);
+    pointer-events: none;
+}
+
+#updateButton:hover,
+#updateButton:focus {
+    text-shadow: 0px 0px 20px #fff;
+    outline: none;
+}
+
+#updateButton:active {
+    color: #c7c7c7;
+    text-shadow: 0px 0px 20px #c7c7c7;
+}
+
+#updateButton:hover,
+#updateButton:focus {
+    -webkit-filter: drop-shadow(0px 0px 2px #fff);
+}
+
+#updateButton:active {
+    stroke: #c7c7c7;
+}
+
+#updateButton:active {
+    -webkit-filter: drop-shadow(0px 0px 2px #c7c7c7);
+}
+
+#updateButton:disabled {
+    stroke: rgba(255, 255, 255, 0.75);
+}
+
+#updateButtonContent {
+    display: flex;
+    align-items: center;
+}
+
 .playBar {
     position: absolute;
     left: 0;
     width: 100%;
-    height: 135px;
+    height: 15vh;
     background-color: rgba(128, 128, 128, 0.5);
     bottom: 0;
+}
+
+/* Logo image. */
+#welcome_logo {
+    height: 150px;
+    width: auto;
+    position: relative;
+}
+
+/* Logo container styles. */
+#welcome_logo_container {
+    position: relative;
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    margin-top: 50px;
+}
+
+/* Logo container styles w/ update. */
+#welcome_logo_container[update] {
+    cursor: pointer
+}
+
+#welcome_logo_container[update]:before,
+#welcome_logo_container[update]:after {
+    cursor: pointer;
+    position: absolute;
+    content: '';
+    height: 100%;
+    width: 100%;
+    top: 0%;
+    left: 0%;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #43c628;
+    animation: glow-grow 4s ease-out infinite;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+#welcome_logo_container[update]:before {
+    animation-delay: 2s;
+}
+
+#landingHeader {
+    font-family: 'Avenir Medium';
+    text-align: center;
+    color: white;
+    margin-left: 500px;
+    letter-spacing: 1px;
+    font-size: 38px;
+    text-shadow: white 0px 0px 0px;
 }

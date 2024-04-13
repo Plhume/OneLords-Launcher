@@ -27,9 +27,8 @@ window.eval = global.eval = function () {
 
 // Display warning when devtools window is opened.
 remote.getCurrentWebContents().on('devtools-opened', () => {
-    console.log('%cThe console is dark and full of terrors.', 'color: white; -webkit-text-stroke: 4px #a02d2a; font-size: 60px; font-weight: bold')
-    console.log('%cIf you\'ve been told to paste something here, you\'re being scammed.', 'font-size: 16px')
-    console.log('%cUnless you know exactly what you\'re doing, close this window.', 'font-size: 16px')
+    console.log('%cSi vous ne savez pas exactement ce que vous faites, fermez cet onglet !', 'color: white; -webkit-text-stroke: 4px #a02d2a; font-size: 60px; font-weight: bold')
+    console.log('%cSachez que copier et coller des éléments ici peut-être très dangereux.', 'font-size: 16px')
 })
 
 // Disable zoom, needed for darwin.
@@ -184,10 +183,10 @@ document.addEventListener('readystatechange', function () {
         //const targetWidth2 = document.getElementById("server_selection").getBoundingClientRect().width
         //const targetWidth3 = document.getElementById("launch_button").getBoundingClientRect().width
 
-        document.getElementById('launch_details').style.maxWidth = 266.01
-        document.getElementById('launch_progress').style.width = 170.8
-        document.getElementById('launch_details_right').style.maxWidth = 170.8
-        document.getElementById('launch_progress_label').style.width = 53.21
+        //document.getElementById('launch_details').style.maxWidth = 266.01
+        //document.getElementById('launch_progress').style.width = 170.8
+        //document.getElementById('launch_details_right').style.maxWidth = 170.8
+        //document.getElementById('launch_progress_label').style.width = 53.21
         
     }
 

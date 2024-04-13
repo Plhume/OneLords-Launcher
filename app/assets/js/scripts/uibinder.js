@@ -21,7 +21,8 @@ const VIEWS = {
     settings: '#settingsContainer',
     welcome: '#welcomeContainer',
     waiting: '#waitingContainer',
-    maintenance: '#maintenanceContainer'
+    maintenance: '#maintenanceContainer',
+    update: '#updateContainer'
 }
 
 // The currently shown view container.
@@ -70,25 +71,16 @@ async function fetchMaintenanceStatus(url) {
     }
 }
 
-const url = 'https://launcher.onelords.fr/maintenance.json';
-function getMaintenanceStatus() {
-    fetchMaintenanceStatus(url)
-        .then(maintenanceStatus => {
-            console.log(maintenanceStatus);
-            if (maintenanceStatus == true) {
-                console.log('Maintenance en cours');
-            } else {
-                console.log('Pas de maintenance !');
-            };
-        })
-        .catch(error => {
-            console.error('Une erreur est survenue : ', error);
-        });
-}
-
-function isAdmin(authUser) {
-    if (authUser == null) return false
-    if (authUser.uuid == ConfigManager.getSelectedAccount.uuid) return true
+async function fetchAdminsList(url) {
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const adminsList = data.admins;
+        return adminsList;
+    } catch (error) {
+        console.error('Une erreur est survenue : ', error);
+        throw error;
+    }
 }
 
 async function showMainUI(data) {
@@ -103,6 +95,7 @@ async function showMainUI(data) {
     setTimeout(() => {
         document.getElementById('frameBar').style.backgroundColor = 'rgba(0, 0, 0, 0) 100%'
         document.body.style.backgroundColor = `rgba(0, 0, 0, 0) 100%`
+        //document.body.style.backgroundImage = `url('assets/images/backgrounds/${document.body.getAttribute('bkid')}.jpg')`
         $('#main').show()
 
         const isLoggedIn = Object.keys(ConfigManager.getAuthAccounts()).length > 0
@@ -122,13 +115,23 @@ async function showMainUI(data) {
                 fetchMaintenanceStatus(url)
                     .then(maintenanceStatus => {
                         if (maintenanceStatus == true) {
-                            //if (ConfigManager.getSelectedAccount().uuid == 'b1bbccb3689d4d60bf3d8372a3d6bea3') {
-                                //currentView = VIEWS.landing
-                                //$(VIEWS.landing).fadeIn(1000)
-                            //} else {
-                                currentView = VIEWS.maintenance
-                                $(VIEWS.maintenance).fadeIn(1000)
-                            //}
+                            const url = 'https://launcher.onelords.fr/admin.json';
+                            fetchAdminsList(url)
+                                .then(adminsList => {
+                                    const list = adminsList;
+                                    const formattedList = list.join(', ');
+
+                                    if (formattedList.includes(ConfigManager.getSelectedAccount().uuid)) {
+                                        currentView = VIEWS.landing
+                                        $(VIEWS.landing).fadeIn(1000)
+                                    } else {
+                                        currentView = VIEWS.maintenance
+                                        $(VIEWS.maintenance).fadeIn(1000)
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Une erreur est survenue : ', error);
+                                });
                         } else {
                             currentView = VIEWS.landing
                             $(VIEWS.landing).fadeIn(1000)
@@ -154,9 +157,9 @@ async function showMainUI(data) {
 
     }, 750)
     // Disable tabbing to the news container.
-    initNews().then(() => {
-        $('#newsContainer *').attr('tabindex', '-1')
-    })
+    //initNews().then(() => {
+        //$('#newsContainer *').attr('tabindex', '-1')
+    //})
 }
 
 function showFatalStartupError() {
