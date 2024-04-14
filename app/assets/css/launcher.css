@@ -68,6 +68,7 @@ button {
     flex-direction: column;
     transition: background-color 1s ease;
     /*background-color: rgba(0, 0, 0, 0.5);*/
+    background-color: rgb(26, 25, 25);
     -webkit-user-select: none;
 }
 
@@ -238,7 +239,7 @@ button {
     align-items: center;
     height: 100%;
     width: 100%;
-    background: rgba(0, 0, 0, 0) 100%;
+    background-color: rgb(26, 25, 25);
 }
 
 #welcomeContent {
@@ -409,7 +410,7 @@ button {
     height: 100%;
     width: 100%;
     transition: filter 0.25s ease;
-    background: rgba(0, 0, 0, 0) 100%;
+    background-color: rgb(26, 25, 25);
 }
 
 /* Login cancel button styles. */
@@ -519,12 +520,12 @@ button {
 
 /* Logo on login form. */
 #loginImageSeal {
-    border-radius: 50%;
-    border: 2px solid #cad7e1;
-    background: rgba(1, 2, 1, 0.5);
+    /*border-radius: 50%;
+    /*border: 2px solid #cad7e1;
+    background: rgba(1, 2, 1, 0.5);*/
     height: 125px;
     width: 125px;
-    box-shadow: 0px 0px 10px 0px rgb(0, 0, 0);
+    /*box-shadow: 0px 0px 10px 0px rgb(0, 0, 0);*/
     margin-bottom: 20px;
 }
 
@@ -956,7 +957,7 @@ button {
     height: 100%;
     width: 100%;
     transition: filter 0.25s ease;
-    background: rgba(0, 0, 0, 0) 100%;
+    background-color: rgb(26, 25, 25);
 }
 
 #waitingContent {
@@ -1039,7 +1040,7 @@ button {
     height: 100%;
     width: 100%;
     transition: filter 0.25s ease;
-    background: rgba(0, 0, 0, 0) 100%;
+    background-color: rgb(26, 25, 25);
 }
 
 #loginOptionsContent {
@@ -1130,7 +1131,7 @@ button {
     position: relative;
     height: 100%;
     display: flex;
-    background-color: rgba(0, 0, 0, 0.842) 100%;
+    background-color: rgb(26, 25, 25);
     transition: background-color 0.25s cubic-bezier(.02, .01, .47, 1);
 }
 
@@ -1389,7 +1390,7 @@ button {
 /* Default styles for text/number inputs. */
 #settingsContainer input[type=number],
 #settingsContainer input[type=text] {
-    color: white;
+    color: rgb(255, 255, 255);
     background: rgba(0, 0, 0, 0.25);
     border-radius: 3px;
     border: 1px solid rgba(126, 126, 126, 0.57);
@@ -4237,14 +4238,16 @@ input:checked+.toggleSwitchSlider:before {
     height: auto;
 }
 
-/* Rotating image for the spinner. */
-#loadSpinnerImage {
-    width: 280px;
+/* Cette classe est placée avec un texte en gros en dessous de l'image */
+#loadSpinner {
+    position: absolute;
+    width: 277px;
     height: auto;
-    z-index: 400;
+    animation: rotating 10s linear infinite;
 }
 
-#loadText {
+/* Fait la classe loadingSpinnerText et elle est positionnée en gros en dessous de l'image */
+#loadSpinnerText {
     font-family: 'Avenir Medium';
     font-size: 20px;
     font-weight: bold;
@@ -4282,7 +4285,7 @@ input:checked+.toggleSwitchSlider:before {
     height: 100%;
     width: 100%;
     transition: filter 0.25s ease;
-    background: rgba(0, 0, 0, 0) 100%;
+    background-color: rgb(26, 25, 25);
 }
 
 #maintenanceContent {
@@ -4376,7 +4379,7 @@ input:checked+.toggleSwitchSlider:before {
     height: 100%;
     width: 100%;
     transition: filter 0.25s ease;
-    background: rgba(0, 0, 0, 0) 100%;
+    background-color: rgb(26, 25, 25);
 }
 
 #updateContent {
