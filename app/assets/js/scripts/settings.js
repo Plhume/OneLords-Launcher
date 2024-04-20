@@ -559,6 +559,7 @@ function populateAuthAccounts() {
     authKeys.forEach((val) => {
         const acc = authAccounts[val]
 
+        // add [Admin] in red tag to the username when the account is admin
         async function fetchAdminsList(url) {
             try {
                 const response = await fetch(url);
@@ -577,9 +578,9 @@ function populateAuthAccounts() {
                 const list = adminsList;
                 const formattedList = list.join(', ');
 
-                if (formattedList.includes(selectedUUID)) {
-                    // add in red and bold Administrator after username
-                    acc.username = acc.username + ' \n<span style="color: red; font-weight: bold;">[Admin]</span>';
+                if (formattedList.includes(ConfigManager.getSelectedAccount().uuid)) {
+                    // add the tag in red and bold
+                    acc.username = acc.username + ' <span style="color: red; font-weight: bold;">[Admin]</span>';
                 } else {
                     acc.username = acc.username;
                 }

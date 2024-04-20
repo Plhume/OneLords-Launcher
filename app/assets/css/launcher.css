@@ -3778,7 +3778,7 @@ input:checked+.toggleSwitchSlider:before {
     justify-content: center;
     width: 100%;
     height: calc(100% - 22px);
-    background: rgba(0, 0, 0, 0) 100%;
+    background-color: rgb(26, 25, 25);
 }
 
 /* Main overlay content. */
