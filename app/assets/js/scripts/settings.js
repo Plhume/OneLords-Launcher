@@ -559,36 +559,6 @@ function populateAuthAccounts() {
     authKeys.forEach((val) => {
         const acc = authAccounts[val]
 
-        // add [Admin] in red tag to the username when the account is admin
-        async function fetchAdminsList(url) {
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                const adminsList = data.admins;
-                return adminsList;
-            } catch (error) {
-                console.error('Une erreur est survenue : ', error);
-                throw error;
-            }
-        }
-
-        const url = 'https://launcher.onelords.fr/admin.json';
-        fetchAdminsList(url)
-            .then(adminsList => {
-                const list = adminsList;
-                const formattedList = list.join(', ');
-
-                if (formattedList.includes(ConfigManager.getSelectedAccount().uuid)) {
-                    // add the tag in red and bold
-                    acc.username = acc.username + ' <span style="color: red; font-weight: bold;">[Admin]</span>';
-                } else {
-                    acc.username = acc.username;
-                }
-            })
-            .catch(error => {
-                console.error('Une erreur est survenue : ', error);
-            });
-
         const accHtml = `<div class="settingsAuthAccount" uuid="${acc.uuid}">
             <div class="settingsAuthAccountLeft">
                 <img class="settingsAuthAccountImage" alt="${acc.displayName}" src="https://mc-heads.net/body/${acc.uuid}/60">
