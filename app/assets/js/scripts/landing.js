@@ -97,7 +97,7 @@ document.getElementById('launch_button').addEventListener('click', async e => {
 
             fetchMaintenanceStatus(url)
                 .then(async maintenanceStatus => {
-                    if (maintenanceStatus == true) {
+                    /*if (maintenanceStatus == false) {
                         if (ConfigManager.getSelectedAccount().uuid == 'b1bbccb3689d4d60bf3d8372a3d6bea3') {
                             //setLaunchDetails('Lancement du jeu...')
                             //toggleLaunchArea(true)
@@ -115,8 +115,8 @@ document.getElementById('launch_button').addEventListener('click', async e => {
                         } else {
                             setLaunchInfo('Maintenance en cours')
                             //setLaunchDetails(Lang.queryJS('landing.launch.maintenance'))
-                        }
-                    } else {
+                        }*/
+                    {
                         setLaunchInfo('Lancement du jeu...')
                         //setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
                         //toggleLaunchArea(true)
