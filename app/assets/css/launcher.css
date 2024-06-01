@@ -2673,58 +2673,92 @@ input:checked+.toggleSwitchSlider:before {
 }
 
 /* Lower content container. */
-#landingContainer>#lower {
+#landingContainer > #lower {
     height: 23%;
     display: flex;
-    background: rgba(0, 0, 0, 0) 100%;
+    background: rgba(0, 0, 0, 0);
     overflow: hidden;
-
 }
 
-#landingContainer>#lower>#left {
+#landingContainer > #lower > #left,
+#landingContainer > #lower > #center,
+#landingContainer > #lower > #right {
     position: relative;
     transition: top 2s ease;
-    top: 0px;
+    top: 0;
     height: 100%;
-    width: 33%;
     display: inline-flex;
     justify-content: center;
 }
 
-#landingContainer>#lower>#left #content {
+#landingContainer > #lower > #left {
+    width: 33%;
+}
+
+#landingContainer > #lower > #center {
+    width: 34%;
+}
+
+#landingContainer > #lower > #right {
+    width: 33%;
+    overflow: hidden;
+}
+
+#landingContainer > #lower > #left #content,
+#landingContainer > #lower > #center #content {
     position: relative;
-    top: 25px;
     display: inline-flex;
     line-height: 24px;
-    left: 100;
 }
 
-#landingContainer>#lower>#center {
-    position: relative;
-    transition: top 2s ease;
-    top: 0px;
-    height: 10;
-    width: 34%;
-    display: inline-flex;
-    justify-content: center;
+#landingContainer > #lower > #left #content {
+    top: 25px;
 }
 
-#landingContainer>#lower>#center #content {
-    position: relative;
+#landingContainer > #lower > #center #content {
     z-index: 500;
-    transition: top 2s ease;
     top: 10px;
 }
 
-#landingContainer>#lower>#right {
-    position: relative;
-    transition: top 2s ease;
-    top: 0px;
-    height: 100%;
-    width: 33%;
-    left: 100;
-    overflow: hidden;
-    display: inline-flex;
+/* Media queries for responsiveness */
+
+/* For screens smaller than 768px */
+@media (max-width: 768px) {
+    #landingContainer > #lower {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    #landingContainer > #lower > #left,
+    #landingContainer > #lower > #center,
+    #landingContainer > #lower > #right {
+        width: 100%;
+        height: auto;
+    }
+
+    #landingContainer > #lower > #left #content,
+    #landingContainer > #lower > #center #content {
+        top: 15px; /* Adjust the top value as needed for smaller screens */
+    }
+}
+
+/* For screens between 768px and 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+    #landingContainer > #lower {
+        height: auto;
+    }
+    
+    #landingContainer > #lower > #left,
+    #landingContainer > #lower > #center,
+    #landingContainer > #lower > #right {
+        width: 100%;
+        height: auto;
+    }
+
+    #landingContainer > #lower > #left #content,
+    #landingContainer > #lower > #center #content {
+        top: 20px; /* Adjust the top value as needed for medium screens */
+    }
 }
 
 /*******************************************************************************
